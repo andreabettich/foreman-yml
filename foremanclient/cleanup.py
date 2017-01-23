@@ -1,14 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 
-
-import sys
-import logging
-import log
-import foremanclient
-from pprint import pprint
-from foreman.client import Foreman, ForemanException
-from voluptuous import MultipleInvalid
+from foreman_yml.base import ForemanBase
+from foreman_yml.voluptuous import MultipleInvalid
 
 
 

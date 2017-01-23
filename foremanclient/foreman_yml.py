@@ -3,12 +3,12 @@
 
 import yaml
 import sys
-from foremanclient.importer import ForemanImport
-from foremanclient.dump import ForemanDump
-from foremanclient.cleanup import ForemanCleanup
+from foreman_yml.importer import ForemanImport
+from foreman_yml.dump import ForemanDump
+from foreman_yml.cleanup import ForemanCleanup
 import os
 
-import log
+from foreman_yml import log
 
 
 def fm_dump(fm):

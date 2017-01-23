@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 
-from voluptuous import Schema, Required, All, Length, Range, Optional, Any, MultipleInvalid
+from foreman_yml.voluptuous import Schema, Required, All, Optional, Any
 
 class Validator:
 

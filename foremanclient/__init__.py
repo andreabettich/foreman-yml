@@ -4,10 +4,9 @@
 
 import sys
 import logging
-import log
-from foremanclient.validator import Validator
-from foreman.client import Foreman, ForemanException
-from pprint import pprint
+from foreman_yml import log
+from foreman_yml.validator import Validator
+from foreman.client import Foreman
 
 
 class ForemanBase:
@@ -30,7 +29,15 @@ class ForemanBase:
     def connect(self):
         try:
             logging.disable(logging.WARNING)
-            self.fm = Foreman(self.config['auth']['url'], (self.config['auth']['user'], self.config['auth']['pass']), api_version=2, use_cache=False, strict_cache=False)
+            self.fm = Foreman(
+                              self.config['auth']['url'],
+                              (
+                                  self.config['auth']['user'],
+                                  self.config['auth']['pass']
+                              ),
+                              api_version=2,
+                              use_cache=False,
+                              strict_cache=False)
             # this is nescesary for detecting faulty credentials in yaml
             self.fm.architectures.index()
             logging.disable(self.loglevel-1)

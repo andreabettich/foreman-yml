@@ -2,18 +2,15 @@
 # -*- coding: utf8 -*-
 
 
-import sys
-import logging
-import log
-import foremanclient
+from foreman_yml.base import ForemanBase
 import yaml
-from collections import OrderedDict
-from pprint import pprint
-from foreman.client import Foreman, ForemanException
-
-
 import re
-from cStringIO import StringIO
+
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 
 def _fix_dump(dump, indentSize=2):
     stream = StringIO(dump)
@@ -24,10 +21,10 @@ def _fix_dump(dump, indentSize=2):
     prefix = 0
     for s in stream:
         indent, key, colon = pat.match(s).groups()
-        if indent=="" and key[0]!= '-':
+        if indent == "" and key[0] != '-':
             prefix = 0
         if last:
-            if len(last[0])==len(indent) and last[2]==':':
+            if len(last[0]) == len(indent) and last[2] == ':':
                 if all([
                         not last[1].startswith('-'),
                         s.strip().startswith('-')
@@ -38,10 +35,7 @@ def _fix_dump(dump, indentSize=2):
     return out.getvalue()
 
 
-
-class ForemanDump(foremanclient.ForemanBase):
-
-
+class ForemanDump(ForemanBase):
 
     # dump functionality
     def dump(self):

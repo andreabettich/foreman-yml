@@ -2,15 +2,15 @@
 # -*- coding: utf8 -*-
 
 
-import sys
-import logging
-import log
-import foremanclient
+from foreman_yml.base import ForemanBase
 from pprint import pprint
-from foreman.client import Foreman, ForemanException
-from voluptuous import MultipleInvalid
+from foreman.client import ForemanException
+from foreman_yml.voluptuous import MultipleInvalid
+
+from foreman_yml import log
 
 
+class ForemanImport(ForemanBase):
 
 class ForemanImport(foremanclient.ForemanBase):
 
@@ -53,7 +53,7 @@ class ForemanImport(foremanclient.ForemanBase):
                 log.log(log.LOG_INFO, "Create Domain '{0}'".format(domain['name']))
                 dom_params = []
                 if (domain['parameters']):
-                    for name,value in domain['parameters'].iteritems():
+                    for name,value in domain['parameters'].items():
                         p = {
                             'name':     name,
                             'value':    value
@@ -309,7 +309,7 @@ class ForemanImport(foremanclient.ForemanBase):
 
                 #  host_params
                 if operatingsystem['parameters'] is not None:
-                    for name,value in operatingsystem['parameters'].iteritems():
+                    for name,value in operatingsystem['parameters'].items():
                         p = {
                             'name':     name,
                             'value':    value
@@ -611,7 +611,7 @@ class ForemanImport(foremanclient.ForemanBase):
 
                 # hostgroup parameters
                 if hostgroup['parameters'] is not None:
-                    for param_name, param_val in hostgroup['parameters'].iteritems():
+                    for param_name, param_val in hostgroup['parameters'].items():
                         param_arr = { "name": param_name, "value": param_val }
                         try:
                             self.fm.hostgroups.parameters_create(param_arr, created_hg_id)
@@ -703,7 +703,7 @@ class ForemanImport(foremanclient.ForemanBase):
 
                 # build host_params array
                 host_params = []
-                for name,value in hostc['parameters'].iteritems():
+                for name,value in hostc['parameters'].items():
                     p = {
                         'name':     name,
                         'nested':   False,
@@ -767,7 +767,8 @@ class ForemanImport(foremanclient.ForemanBase):
                     try:
                         self.fm.hosts.update(fixhost, fmh['id'])
                         return fmh
-                    except:
+                    except Exception as e:
+                        log.log(log.LOG_ERROR, e)
                         log.log(log.LOG_DEBUG, "An Error Occured when linking Host '{0}' (non-fatal)".format(hostc['name']))
                 except:
                     pass
@@ -814,7 +815,7 @@ class ForemanImport(foremanclient.ForemanBase):
                 log.log(log.LOG_ERROR, "Failed to fetch permission list from foreman")
                 continue
 
-            for name, permclass in wanted_perms.iteritems():
+            for name, permclass in wanted_perms.items():
                 permclass_ids = []
                 for perm in permclass:
                     for pcand in permlist:
